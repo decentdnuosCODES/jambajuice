@@ -101,8 +101,17 @@ function update() {
 			for (let k = 0; k < enemies.length; k++) {
 				enemies[k].velocity.x += Math.sign((plr.x - enemies[k].x)) * 0.05;
 				console.log("working");
+				if (plr.x - enemies[k].x < 60) {
+					plr.health -= 0.01;
+				}
 			}
 		}
+	}
+
+	if (plr.health <= 0) {
+		plr.x = 0;
+		plr.y = -500;
+		plr.health = 100;
 	}
 
 	if (frameCount % 3600 == 0) {
@@ -225,4 +234,8 @@ function update() {
 			}
 		}
 	}
+	image(textures[0], 15, 15, 120, 120);
+	textSize(40);
+	fill('white');
+	text(plr.health, 42, 95);
 }
