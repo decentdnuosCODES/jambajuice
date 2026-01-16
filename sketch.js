@@ -225,4 +225,5 @@ function update() {
 			}
 		}
 	}
+	drawSprites();
 }
