@@ -70,6 +70,7 @@ plr.diameter = 30;
 plr.img = textures[1];
 plr.bounciness = 0.5;
 plr.mass = 50;
+plr.health = 100;
 
 function newEnemy(x, y) {
 	let enemy = new Sprite();
