@@ -117,10 +117,9 @@ function update() {
 	jumpDB += 1;
 
 	// this provides a way to hold your horses
-	if (kb.pressed('space') && jumpDB > 50) {
+	if (kb.pressed('s')) {
 		plr.vel = new Vector(0, 0);
 		plr.rotationSpeed = 0;
-		jumpDB = 0;
 	}
 
 	if (kb.pressed('up') && jumpDB > 50) {
@@ -137,7 +136,7 @@ function update() {
 		mouse.cursor = "grab";
 	}
 	if (mouse.pressed("left")) {
-		if (kb.pressing("n")) {
+		if (kb.pressing("t")) {
 			let crate = new Sprite();
 			crate.x = plr.x + (d.normalize().x * 20);
 			crate.y = plr.y + (d.normalize().y * 20);
@@ -153,7 +152,7 @@ function update() {
 			sounds[3].play();
 		} else if (kb.pressing('e')) {
 			sounds[3].play();
-		} else if (kb.pressing('s')) {
+		} else if (kb.pressing('q')) {
 			let projectile = new Sprite();
 			projectile.x = plr.x + (d.normalize().x * 20);
 			projectile.y = plr.y + (d.normalize().y * 20);
@@ -166,7 +165,7 @@ function update() {
 
 			// do NOT stop the sound, it could be a little better if they overlap
 			sounds[4].play();
-		} else if (kb.pressing('c')) {
+		} else if (kb.pressing('r')) {
 			console.log("real")
 			if (b1 instanceof Sprite && b2 === null) {
 				for (let i = 0; i < spawnedBlocks.length; i++) {
