@@ -109,7 +109,7 @@ function update() {
 				}
 				for (let i = 0; i < spawnedBlocks.length; i++) {
 					if (Math.abs(spawnedBlocks[i].x - enemies[k].x) < 21) {
-						if (frameCount % 25 == 0) {
+						if (frameCount % 5 == 0) {
 							spawnedBlocks[i].health -= 1;
 						}
 					}
@@ -132,7 +132,7 @@ function update() {
 
 	for (let i = 0; i < spawnedBlocks.length; i++) {
 		if (spawnedBlocks[i].health <= 0) {
-			spawnedBlocks[i].delete(); // deal with all the errors later
+			spawnedBlocks[i].life = 5;
 		}
 	}
 
