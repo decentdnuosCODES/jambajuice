@@ -141,6 +141,12 @@ function update() {
 		console.log("new mode");
 	}
 
+	if (frameCount % 7200 == 0) {
+		for (let i = 0; i < joints.length; i++) {
+			joints[i].delete();
+		}
+	}
+
 	camera.x = lerp(camera.x, plr.x, 0.25);
 	camera.y = lerp(camera.y, plr.y, 0.25);
 	camera.zoom = 2
