@@ -102,16 +102,9 @@ function update() {
 			for (let k = 0; k < enemies.length; k++) {
 				enemies[k].attractTo(plr, 1);
 				console.log("working");
-				if (Math.abs(plr.x - enemies[k].x) < 20) {
+				if (Math.abs(plr.x - enemies[k].x) < 22 && Math.abs(plr.y - enemies[k].y)) {
 					if (frameCount % 5 == 0 && plr.health > 0) {
 						plr.health -= 1;
-					}
-				}
-				for (let i = 0; i < spawnedBlocks.length; i++) {
-					if (Math.abs(spawnedBlocks[i].x - enemies[k].x) < 21) {
-						if (frameCount % 5 == 0) {
-							spawnedBlocks[i].health -= 1;
-						}
 					}
 				}
 			}
@@ -128,12 +121,6 @@ function update() {
 			plr.y = -500;
 			plr.health = 100;
 		}, 1000);
-	}
-
-	for (let i = 0; i < spawnedBlocks.length; i++) {
-		if (spawnedBlocks[i].health <= 0) {
-			spawnedBlocks[i].life = 5;
-		}
 	}
 
 	if (frameCount % 3600 == 0) {
@@ -182,8 +169,7 @@ function update() {
 			crate.height = 30;
 			crate.mass = 50;
 			crate.img = textures[3];
-			crate.life = 100000;
-			crate.health = 150;
+			crate.life = 10000
 			spawnedBlocks.add(crate);
 
 			sounds[3].stop();
