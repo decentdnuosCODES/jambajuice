@@ -103,7 +103,7 @@ function update() {
 				enemies[k].attractTo(plr, 1);
 				console.log("working");
 				if (Math.abs(plr.x - enemies[k].x) < 20) {
-					if (frameCount % 5 == 0) {
+					if (frameCount % 5 == 0 && plr.health > 0) {
 						plr.health -= 1;
 					}
 				}
@@ -123,6 +123,7 @@ function update() {
 		plr.physics = STATIC;
 		setTimeout(function() {
 			plr.physics = DYNAMIC;
+			plr.opacity = 1;
 			plr.x = 0;
 			plr.y = -500;
 			plr.health = 100;
@@ -131,7 +132,7 @@ function update() {
 
 	for (let i = 0; i < spawnedBlocks.length; i++) {
 		if (spawnedBlocks[i].health <= 0) {
-			spawnedBlocks[i].remove(); // deal with all the errors later
+			spawnedBlocks[i].delete(); // deal with all the errors later
 		}
 	}
 
