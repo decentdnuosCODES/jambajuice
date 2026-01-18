@@ -19,7 +19,7 @@ const textures = [
 	loadImage('images/player.png'),
 	loadImage('images/enemy.png'),
 	loadImage('images/block.png'),
-	loadImage('images/crate.png'),
+	loadImage('images/block1.png'),
 	loadImage('images/bullet.png')
 ];
 
