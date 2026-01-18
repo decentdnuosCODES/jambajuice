@@ -144,6 +144,10 @@ function update() {
 		}
 	}
 
+	if (math.abs(plr.y) > 5000 || math.abs(plr.x) > 10000) {
+		plr.health -= 1;
+	}
+
 	camera.x = lerp(camera.x, plr.x, 0.25);
 	camera.y = lerp(camera.y, plr.y, 0.25);
 	camera.zoom = 2
@@ -177,9 +181,9 @@ function update() {
 			crate.velocity = d.mult(4);
 			crate.width = 30;
 			crate.height = 30;
-			crate.mass = 50;
+			crate.mass = 50 / (round + 1);
 			crate.img = textures[3];
-			crate.life = 10000
+			crate.life = 10000 / (round + 1)
 			spawnedBlocks.add(crate);
 
 			sounds[3].stop();
@@ -192,9 +196,9 @@ function update() {
 			projectile.y = plr.y + (d.normalize().y * 20);
 			projectile.velocity = d.mult(20);
 			projectile.diameter = 10;
-			projectile.mass = 10000000;
+			projectile.mass = 10000000 / (round + 1);
 			projectile.img = textures[5];
-			projectile.life = 500;
+			projectile.life = 500 / (round + 1);
 			bullets.add(projectile);
 
 			// do NOT stop the sound, it could be a little better if they overlap
@@ -240,8 +244,8 @@ function update() {
 					spawnedBlocks[i].moveTowards(
 						mouse.x + spawnedBlocks[i].mouse.x,
 						mouse.y + spawnedBlocks[i].mouse.y,
-						1
-					)
+						1 / (round + 1)
+					);
 				}
 			}
 		}
