@@ -100,7 +100,7 @@ function update() {
 		}
 		if (enemies.length > 0) {
 			for (let k = 0; k < enemies.length; k++) {
-				enemies[k].velocity.x += Math.sign((plr.x - enemies[k].x)) * 0.05;
+				enemies[k].attractTo(plr, 1);
 				console.log("working");
 				if (Math.abs(plr.x - enemies[k].x) < 20) {
 					if (frameCount % 5 == 0) {
@@ -127,6 +127,12 @@ function update() {
 			plr.y = -500;
 			plr.health = 100;
 		}, 1000);
+	}
+
+	for (let i = 0; i < spawnedBlocks.length; i++) {
+		if (spawnedBlocks[i].health <= 0) {
+			spawnedBlocks[i].remove(); // deal with all the errors later
+		}
 	}
 
 	if (frameCount % 3600 == 0) {
