@@ -5,6 +5,7 @@ world.gravity.y = 10;
 // basic variables
 let jumpDB = 0;
 let hunting = false;
+let round = 0;
 
 // variables for the welding tool
 let joints = [];
@@ -100,9 +101,9 @@ function update() {
 		}
 		if (enemies.length > 0) {
 			for (let k = 0; k < enemies.length; k++) {
-				enemies[k].attractTo(plr, 1);
+				enemies[k].attractTo(plr, round / 2);
 				console.log("working");
-				if (Math.abs(plr.x - enemies[k].x) < 22 && Math.abs(plr.y - enemies[k].y)) {
+				if (Math.abs(plr.x - enemies[k].x) < 35 && Math.abs(plr.y - enemies[k].y) < 35) {
 					if (frameCount % 5 == 0 && plr.health > 0) {
 						plr.health -= 1;
 					}
@@ -120,12 +121,21 @@ function update() {
 			plr.x = 0;
 			plr.y = -500;
 			plr.health = 100;
+
+			hunting = false;
+			round = 0;
+
+			for (let i = 0; i < joints.length; i++) {
+				joints[i].delete();
+			}
 		}, 1000);
 	}
 
 	if (frameCount % 3600 == 0) {
 		hunting = !hunting;
-		console.log("new mode");
+		if (hunting == true) {
+			round++;
+		}
 	}
 
 	if (frameCount % 7200 == 0) {
