@@ -107,14 +107,26 @@ function update() {
 						plr.health -= 1;
 					}
 				}
+				for (let i = 0; i < spawnedBlocks.length; i++) {
+					if (Math.abs(spawnedBlocks[i].x - enemies[k].x) < 21) {
+						if (frameCount % 25 == 0) {
+							spawnedBlocks[i].health -= 1;
+						}
+					}
+				}
 			}
 		}
 	}
 
 	if (plr.health <= 0) {
-		plr.x = 0;
-		plr.y = -500;
-		plr.health = 100;
+		plr.opacity = 0;
+		plr.physics = STATIC;
+		setTimeout(function() {
+			plr.physics = DYNAMIC;
+			plr.x = 0;
+			plr.y = -500;
+			plr.health = 100;
+		}, 1000);
 	}
 
 	if (frameCount % 3600 == 0) {
@@ -158,6 +170,7 @@ function update() {
 			crate.mass = 50;
 			crate.img = textures[3];
 			crate.life = 100000;
+			crate.health = 150;
 			spawnedBlocks.add(crate);
 
 			sounds[3].stop();
