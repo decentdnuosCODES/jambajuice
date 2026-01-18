@@ -18,8 +18,8 @@ const textures = [
 	loadImage('images/health-panel.png'),
 	loadImage('images/player.png'),
 	loadImage('images/enemy.png'),
-	loadImage('images/block-breakable.png'),
-	loadImage('images/block-unbreakable.png'),
+	loadImage('images/block.png'),
+	loadImage('images/crate.png'),
 	loadImage('images/bullet.png')
 ];
 
