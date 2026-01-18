@@ -131,6 +131,8 @@ function update() {
 		}, 1000);
 	}
 
+	// routine checks
+
 	if (frameCount % 3600 == 0) {
 		hunting = !hunting;
 		if (hunting == true) {
@@ -144,7 +146,7 @@ function update() {
 		}
 	}
 
-	if (math.abs(plr.y) > 5000 || math.abs(plr.x) > 10000) {
+	if (Math.abs(plr.y) > 5000 || Math.abs(plr.x) > 10000) {
 		plr.health -= 1;
 	}
 
