@@ -102,8 +102,10 @@ function update() {
 			for (let k = 0; k < enemies.length; k++) {
 				enemies[k].velocity.x += Math.sign((plr.x - enemies[k].x)) * 0.05;
 				console.log("working");
-				if (Math.abs(plr.x - enemies[k].x) < 30) {
-					plr.health -= 1;
+				if (Math.abs(plr.x - enemies[k].x) < 20) {
+					if (frameCount % 5 == 0) {
+						plr.health -= 1;
+					}
 				}
 			}
 		}
