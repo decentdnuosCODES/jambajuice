@@ -29,7 +29,8 @@ const sounds = [
 	loadSound("sounds/jingle2.wav"),
 	loadSound("sounds/jingle3.wav"),
 	loadSound("sounds/short1.wav"),
-	loadSound("sounds/gunshot.mp3")
+	loadSound("sounds/gunshot.mp3"),
+	loadSound("sounds/death.wav")
 ]
 
 enemies = new Group();
@@ -83,7 +84,10 @@ function newEnemy(x, y) {
 	enemies.add(enemy);
 }
 
-function update() {
+function draw() {
+
+	// math for the sun
+
 
 	let d = new Vector((mouse.x - plr.x), (mouse.y - plr.y));
 
@@ -92,7 +96,7 @@ function update() {
 	if (hunting == false) {
 		console.log("normal me vs....");
 		background(10, 200, 255, 180);
-		image(textures[5], halfWidth / 4, halfHeight / 4, 120, 120)
+		image(textures[5], (Math.sin((-(frameCount + 1800) / 3600) * Math.PI) * halfWidth) + halfWidth - 60, (Math.cos((-(frameCount + 1800) / 3600) * Math.PI) * halfHeight * 0.75) + halfHeight - 60, (Math.sin(frameCount / 1200) * 180) + 60, (Math.sin(frameCount / 1200) * 180) + 60); // this is the sun
 	} else {
 		console.log("evil me >:)");
 		background(25, 0, 50, 180);
@@ -100,22 +104,28 @@ function update() {
 			newEnemy(plr.x, -1000);
 		}
 		if (enemies.length > 0) {
-			for (let k = 0; k < enemies.length; k++) {
-				enemies[k].attractTo(plr, round / 2);
+			for (let s of enemies) {
+				s.attractTo(plr, round / 2);
 				console.log("working");
-				if (Math.abs(plr.x - enemies[k].x) < 35 && Math.abs(plr.y - enemies[k].y) < 35) {
+				if (Math.abs(plr.x - s.x) < 35 && Math.abs(plr.y - s.y) < 35) {
 					if (frameCount % 5 == 0 && plr.health > 0) {
 						plr.health -= 1;
 					}
 				}
+
 			}
 		}
 	}
 
 	if (plr.health <= 0) {
+		if (plr.opacity == 1) {
+			sounds[5].play();
+		}
 		plr.opacity = 0;
 		plr.physics = STATIC;
 		setTimeout(function() {
+			frameCount = 0;
+			enemies.deleteAll();
 			plr.physics = DYNAMIC;
 			plr.opacity = 1;
 			plr.x = 0;
@@ -128,7 +138,7 @@ function update() {
 			for (let i = 0; i < joints.length; i++) {
 				joints[i].delete();
 			}
-		}, 1000);
+		}, 10000);
 	}
 
 	// routine checks
@@ -141,8 +151,8 @@ function update() {
 	}
 
 	if (frameCount % 7200 == 0) {
-		for (let i = 0; i < joints.length; i++) {
-			joints[i].delete();
+		for (let i of joints) {
+			i.delete();
 		}
 	}
 
@@ -208,10 +218,10 @@ function update() {
 		} else if (kb.pressing('r')) {
 			console.log("real")
 			if (b1 instanceof Sprite && b2 === null) {
-				for (let i = 0; i < spawnedBlocks.length; i++) {
-					if (spawnedBlocks[i].mouse.hovering() && (spawnedBlocks[i].y <= plr.y || Math.abs(spawnedBlocks[i].x - plr.x) > 10)) {
-						b2 = spawnedBlocks[i]
-						console.log(spawnedBlocks[i]);
+				for (let i of spawnedBlocks) {
+					if (i.mouse.hovering() && (i.y <= plr.y || Math.abs(i.x - plr.x) > 10)) {
+						b2 = i;
+						console.log(i);
 					}
 				}
 
@@ -225,10 +235,10 @@ function update() {
 				}
 			}
 			if (b1 === null && b2 === null) {
-				for (let i = 0; i < spawnedBlocks.length; i++) {
-					if (spawnedBlocks[i].mouse.hovering() && (spawnedBlocks[i].y <= plr.y || Math.abs(spawnedBlocks[i].x - plr.x) > 10)) {
-						b1 = spawnedBlocks[i]
-						console.log(spawnedBlocks[i]);
+				for (let i of spawnedBlocks) {
+					if (i.mouse.hovering() && (i.y <= plr.y || Math.abs(i.x - plr.x) > 10)) {
+						b1 = i;
+						console.log(i);
 					}
 				}
 			}
@@ -241,11 +251,11 @@ function update() {
 	if (mouse.pressing("left")) {
 		if (kb.pressing('e')) {
 			mouse.cursor = "grabbing";
-			for (let i = 0; i < spawnedBlocks.length; i++) {
-				if (spawnedBlocks[i].mouse.dragging() && (spawnedBlocks[i].y <= plr.y || Math.abs(spawnedBlocks[i].x - plr.x) > 10)) {
-					spawnedBlocks[i].moveTowards(
-						mouse.x + spawnedBlocks[i].mouse.x,
-						mouse.y + spawnedBlocks[i].mouse.y,
+			for (let i of spawnedBlocks) {
+				if (i.mouse.dragging() && (i.y <= plr.y || Math.abs(i.x - plr.x) > 10)) {
+					i.moveTowards(
+						mouse.x + i.mouse.x,
+						mouse.y + i.mouse.y,
 						1 / (round + 1)
 					);
 				}
@@ -253,20 +263,43 @@ function update() {
 		}
 	}
 	if (mouse.pressed("right")) {
-		for (let i = 0; i < spawnedBlocks.length; i++) {
-			if (spawnedBlocks[i].mouse.hovering() && (spawnedBlocks[i].y <= plr.y || Math.abs(spawnedBlocks[i].x - plr.x) > 10)) {
-				if (spawnedBlocks[i].physics == DYNAMIC) {
+		for (let i of spawnedBlocks) {
+			if (i.mouse.hovering()) {
+				if (i.physics == DYNAMIC) {
 					if (lastFroze != null) {
 						lastFroze.physics = DYNAMIC;
 					}
-					spawnedBlocks[i].physics = STATIC;
+					i.physics = STATIC;
 					lastFroze = spawnedBlocks[i];
 				}
 			}
 		}
 	}
-	image(textures[0], 15, 15, 120, 120);
-	textSize(40);
+}
+
+function postProcess() {
+	textSize(80);
+
+	image(textures[0], 15, 15, 240, 240);
 	fill('white');
-	text(plr.health, 42, 95);
+	textFont("Helvetica");
+	text(plr.health, 65, 170);
+
+	if (hunting == true) {
+		fill('black');
+		text("Run, or go inside your hut and hide!", 10, canvas.height - 10);
+	} else {
+		fill('white');
+		text("Build a hut!", 10, canvas.height - 10);
+	}
+
+	let time = new Temporal.PlainTime(((frameCount / 300) + 6) % 24, ((frameCount / 300) % 1) * 60, (frameCount * 12) % 60);
+
+	text("The time is ".concat(time.toString()), 10, canvas.height - 100);
+
+	if (plr.health <= 0) {
+		background(color(0, 0, 0));
+		fill('white');
+		text("YOU ARE DEAD.", 10, canvas.height - 10);
+	}
 }
